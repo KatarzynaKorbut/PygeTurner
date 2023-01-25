@@ -3,6 +3,14 @@ import sys
 import tempfile
 import logging
 
+
+import os
+
+if os.environ["VIRTUAL_ENV"]:
+    virtual_env_path = Path(os.environ["VIRTUAL_ENV"])
+    qt_plugins_path = virtual_env_path / "Lib/site-packages/PySide6/plugins"
+    os.environ["QT_PLUGIN_PATH"] = str(qt_plugins_path)
+
 from PySide6 import QtWidgets, QtGui, QtMultimedia
 from ui_main_window import Ui_MainWindow
 from music21 import converter, environment, note, stream
@@ -86,13 +94,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             )
         else:
             logging.debug("%s", self.music_stream)
-            conv = converter.subConverters.ConverterLilypond()
+            conv = converter.subConverters.ConverterMusicXML()
             with tempfile.TemporaryDirectory(prefix="PygeTurner-") as tmp_dir:
                 # if tmp_dir:= tempfile.mkdtemp(prefix="PygeTurner-"):
                 tmp_path = Path(tmp_dir) / "PygeTurner"
                 image_path = conv.write(
                     self.music_stream,
-                    fmt="musescore",
+                    fmt="musicxml",
                     fp=str(tmp_path),
                     subformats=["png"],
                 )
@@ -142,7 +150,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.update_timer()
         self.time_slider.setMaximum(milliseconds)
 
-    def player_playback_state_changed(self, state: QtMultimedia.QMediaPlayer.PlaybackState):
+    def player_playback_state_changed(
+        self, state: QtMultimedia.QMediaPlayer.PlaybackState
+    ):
         logging.debug("Player playback state changed: %s", state)
         if state == QtMultimedia.QMediaPlayer.PlaybackState.StoppedState:
             self.play_pause_button.toggle()

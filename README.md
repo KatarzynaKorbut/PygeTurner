@@ -6,8 +6,8 @@ Poniższe polecenia są odpowiednie dla systemu Windows. Na innych systemach, ta
 
 ### 1. Instalacja Pythona
 Należy w systemie operacyjnym zainstalować środowisko Python w wersji 3.10 lub wyższej, choć działanie w wyższych wersjach nie jest zagwarantowane. Są na to różne sposoby, przykładowo:
-* za pomocą Microsoft Store, lub
-* można pobrać program instalacyjny z zaufanych stron, w tym oficjalnej strony Pythona, lub
+* za pomocą Microsoft Store,
+* można pobrać program instalacyjny z zaufanych stron, w tym oficjalnej strony Pythona,
 * używając narzędzi takich jak Anaconda czy Chocolatey.
 
 Po szczegóły odsyłam do materiałów dostępnych w Internecie.
@@ -16,7 +16,7 @@ Po szczegóły odsyłam do materiałów dostępnych w Internecie.
 W konsoli PowerShell należy uruchomić poniższe polecenia:
 * Stworzenie środowiska wirtualnego:
   ```bat
-  python3.10 -m venv .venv_Windows
+  python -m venv .venv_Windows
   ```
 * Uaktywnienie środowiska wirtualnego:
   ```bat
