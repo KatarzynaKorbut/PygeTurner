@@ -16,10 +16,12 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QGraphicsView, QHBoxLayout, QLabel,
-    QMainWindow, QMenu, QMenuBar, QScrollArea,
-    QSizePolicy, QSlider, QToolBar, QToolButton,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QGraphicsView, QHBoxLayout, QMainWindow,
+    QMenu, QMenuBar, QScrollArea, QSizePolicy,
+    QToolBar, QVBoxLayout, QWidget)
+
+from audio_player import AudioPlayer
+from sheet_viewer import SheetViewer
 import resources_rc
 
 class Ui_MainWindow(object):
@@ -36,12 +38,12 @@ class Ui_MainWindow(object):
         self.open_sheet.setObjectName(u"open_sheet")
         self.open_sound = QAction(MainWindow)
         self.open_sound.setObjectName(u"open_sound")
-        self.styleSheet = QWidget(MainWindow)
-        self.styleSheet.setObjectName(u"styleSheet")
-        self.styleSheet.setStyleSheet(u"")
-        self.verticalLayout = QVBoxLayout(self.styleSheet)
+        self.main_area = QWidget(MainWindow)
+        self.main_area.setObjectName(u"main_area")
+        self.main_area.setStyleSheet(u"")
+        self.verticalLayout = QVBoxLayout(self.main_area)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.sheet_view = QGraphicsView(self.styleSheet)
+        self.sheet_view = SheetViewer(self.main_area)
         self.sheet_view.setObjectName(u"sheet_view")
         self.sheet_view.setStyleSheet(u"background:transparent")
         self.sheet_view.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
@@ -49,33 +51,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.sheet_view)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.play_pause_button = QToolButton(self.styleSheet)
-        self.play_pause_button.setObjectName(u"play_pause_button")
-        self.play_pause_button.setEnabled(False)
-        icon1 = QIcon(QIcon.fromTheme(u"media-playback-start"))
-        self.play_pause_button.setIcon(icon1)
-        self.play_pause_button.setCheckable(True)
+        self.audio_player = AudioPlayer(self.main_area)
+        self.audio_player.setObjectName(u"audio_player")
 
-        self.horizontalLayout.addWidget(self.play_pause_button)
+        self.verticalLayout.addWidget(self.audio_player)
 
-        self.time_slider = QSlider(self.styleSheet)
-        self.time_slider.setObjectName(u"time_slider")
-        self.time_slider.setEnabled(False)
-        self.time_slider.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout.addWidget(self.time_slider)
-
-        self.time_label = QLabel(self.styleSheet)
-        self.time_label.setObjectName(u"time_label")
-
-        self.horizontalLayout.addWidget(self.time_label)
-
-
-        self.verticalLayout.addLayout(self.horizontalLayout)
-
-        self.widget = QWidget(self.styleSheet)
+        self.widget = QWidget(self.main_area)
         self.widget.setObjectName(u"widget")
         self.horizontalLayout_2 = QHBoxLayout(self.widget)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
@@ -89,7 +70,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 496, 150))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 496, 153))
         self.verticalLayout_3 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
@@ -108,7 +89,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.setStretch(0, 3)
         self.verticalLayout.setStretch(2, 1)
-        MainWindow.setCentralWidget(self.styleSheet)
+        MainWindow.setCentralWidget(self.main_area)
         self.menu_bar = QMenuBar(MainWindow)
         self.menu_bar.setObjectName(u"menu_bar")
         self.menu_bar.setGeometry(QRect(0, 0, 1037, 22))
@@ -137,7 +118,6 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(shortcut)
         self.open_sheet.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz nuty", None))
         self.open_sound.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz d\u017awi\u0119k", None))
-        self.time_label.setText(QCoreApplication.translate("MainWindow", u"00:00:00 / 00:00:00", None))
         self.file_menu.setTitle(QCoreApplication.translate("MainWindow", u"Plik", None))
         self.toolBar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))
     # retranslateUi

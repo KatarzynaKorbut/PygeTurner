@@ -13,13 +13,13 @@
   <property name="windowTitle">
    <string>PygeTurner</string>
   </property>
-  <widget class="QWidget" name="styleSheet">
+  <widget class="QWidget" name="main_area">
    <property name="styleSheet">
     <string notr="true"/>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout" stretch="3,0,1">
     <item>
-     <widget class="QGraphicsView" name="sheet_view">
+     <widget class="SheetViewer" name="sheet_view">
       <property name="styleSheet">
        <string notr="true">background:transparent</string>
       </property>
@@ -32,38 +32,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QToolButton" name="play_pause_button">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="icon">
-         <iconset theme="media-playback-start"/>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSlider" name="time_slider">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="time_label">
-        <property name="text">
-         <string>00:00:00 / 00:00:00</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="AudioPlayer" name="audio_player" native="true"/>
     </item>
     <item>
      <widget class="QWidget" name="widget" native="true">
@@ -85,7 +54,7 @@
             <x>0</x>
             <y>0</y>
             <width>496</width>
-            <height>150</height>
+            <height>153</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3"/>
@@ -157,6 +126,19 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SheetViewer</class>
+   <extends>QGraphicsView</extends>
+   <header>sheet_viewer</header>
+  </customwidget>
+  <customwidget>
+   <class>AudioPlayer</class>
+   <extends>QWidget</extends>
+   <header>audio_player</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>
