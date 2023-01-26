@@ -138,7 +138,7 @@ class Ui_MainWindow(object):
         self.open_sheet.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz nuty", None))
         self.open_sound.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz d\u017awi\u0119k", None))
         self.time_label.setText(QCoreApplication.translate("MainWindow", u"00:00:00 / 00:00:00", None))
-        self.file_menu.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
+        self.file_menu.setTitle(QCoreApplication.translate("MainWindow", u"Plik", None))
         self.toolBar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))
     # retranslateUi
 

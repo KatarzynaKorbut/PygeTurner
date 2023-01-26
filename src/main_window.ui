@@ -113,7 +113,7 @@
    </property>
    <widget class="QMenu" name="file_menu">
     <property name="title">
-     <string>File</string>
+     <string>Plik</string>
     </property>
     <addaction name="open_sheet"/>
     <addaction name="open_sound"/>
