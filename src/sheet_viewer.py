@@ -14,6 +14,7 @@ class SheetViewer(QGraphicsView):
         self.setFrameShape(QFrame.Shape.NoFrame)
 
     def load(self, pixmap: QPixmap):
+        self.setStyleSheet("")
         self.sheet_pixmap_item.setPixmap(pixmap)
         rect = pixmap.rect()
         logging.debug("Sheet image size: %s", rect)
