@@ -4,7 +4,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from music21 import converter
+from music21 import converter, environment
 
 if os.environ["VIRTUAL_ENV"]:
     virtual_env_path = Path(os.environ["VIRTUAL_ENV"])
@@ -25,6 +25,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.open_sheet.triggered.connect(self.on_open_sheet_triggered)
         self.open_sound.triggered.connect(self.on_open_sound_triggered)
+        self.set_musescore_path.triggered.connect(self.on_set_musescore_path_triggered)
 
     def on_open_sheet_triggered(self, s):
         logging.debug("on_open_sheet_triggered(%s)", s)
@@ -68,6 +69,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file_path:
             logging.debug("Loading sound from %s", file_path)
             self.audio_player.load(file_path)
+
+    def on_set_musescore_path_triggered(self, s):
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            caption="Znajdź program MuseScore3.exe",
+            filter="Program MuseScore3 (*.exe)",
+        )
+        if file_path:
+            logging.debug("Setting musescoreDirectPNGPath to %s", file_path)
+            music21_settings = environment.UserSettings()
+            music21_settings["musescoreDirectPNGPath"] = file_path
 
 
 app = QApplication(sys.argv)

@@ -82,10 +82,12 @@
    </property>
    <widget class="QMenu" name="file_menu">
     <property name="title">
-     <string>Plik</string>
+     <string>&amp;Plik</string>
     </property>
     <addaction name="open_sheet"/>
     <addaction name="open_sound"/>
+    <addaction name="separator"/>
+    <addaction name="set_musescore_path"/>
    </widget>
    <addaction name="file_menu"/>
   </widget>
@@ -117,12 +119,17 @@
   </action>
   <action name="open_sheet">
    <property name="text">
-    <string>Otwórz nuty</string>
+    <string>Otwórz &amp;nuty</string>
    </property>
   </action>
   <action name="open_sound">
    <property name="text">
-    <string>Otwórz dźwięk</string>
+    <string>Otwórz &amp;dźwięk</string>
+   </property>
+  </action>
+  <action name="set_musescore_path">
+   <property name="text">
+    <string>Ustaw ścieżkę do MuseScore</string>
    </property>
   </action>
  </widget>

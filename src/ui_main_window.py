@@ -38,6 +38,8 @@ class Ui_MainWindow(object):
         self.open_sheet.setObjectName(u"open_sheet")
         self.open_sound = QAction(MainWindow)
         self.open_sound.setObjectName(u"open_sound")
+        self.set_musescore_path = QAction(MainWindow)
+        self.set_musescore_path.setObjectName(u"set_musescore_path")
         self.main_area = QWidget(MainWindow)
         self.main_area.setObjectName(u"main_area")
         self.main_area.setStyleSheet(u"")
@@ -104,6 +106,8 @@ class Ui_MainWindow(object):
         self.menu_bar.addAction(self.file_menu.menuAction())
         self.file_menu.addAction(self.open_sheet)
         self.file_menu.addAction(self.open_sound)
+        self.file_menu.addSeparator()
+        self.file_menu.addAction(self.set_musescore_path)
 
         self.retranslateUi(MainWindow)
 
@@ -116,9 +120,10 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.actionPlay.setShortcut(QCoreApplication.translate("MainWindow", u"P", None))
 #endif // QT_CONFIG(shortcut)
-        self.open_sheet.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz nuty", None))
-        self.open_sound.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz d\u017awi\u0119k", None))
-        self.file_menu.setTitle(QCoreApplication.translate("MainWindow", u"Plik", None))
+        self.open_sheet.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz &nuty", None))
+        self.open_sound.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz &d\u017awi\u0119k", None))
+        self.set_musescore_path.setText(QCoreApplication.translate("MainWindow", u"Ustaw \u015bcie\u017ck\u0119 do MuseScore", None))
+        self.file_menu.setTitle(QCoreApplication.translate("MainWindow", u"&Plik", None))
         self.toolBar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))
     # retranslateUi
 
