@@ -73,7 +73,7 @@ class AudioPlayer(QWidget):
         )
 
     def _player_duration_changed(self, milliseconds: int):
-        logging.debug("Media duration: %s", milliseconds)
+        logging.debug("Media duration: %s ms", milliseconds)
         self.player_duration = milliseconds
         self.update_timer()
         self.time_slider.setMaximum(milliseconds)

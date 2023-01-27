@@ -3,8 +3,11 @@ import os
 import sys
 import tempfile
 from pathlib import Path
+from typing import Optional
 
-from music21 import converter, environment
+from music21 import converter, environment, note
+
+from note_finder import NoteFinder
 
 if os.environ["VIRTUAL_ENV"]:
     virtual_env_path = Path(os.environ["VIRTUAL_ENV"])
@@ -22,6 +25,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         logging.basicConfig(level=logging.DEBUG)
         self.setupUi(self)
+        self.note_finder: Optional[NoteFinder] = None
 
         self.open_sheet.triggered.connect(self.on_open_sheet_triggered)
         self.open_sound.triggered.connect(self.on_open_sound_triggered)
@@ -35,10 +39,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file_name:
             logging.info("Loading sheet music from %s", file_name)
             try:
-                self.music_stream = converter.parse(file_name)
-                logging.debug("%s", self.music_stream)
-                sheet_pixmap = self.music_to_pixmap(self.music_stream)
-                self.sheet_view.load(sheet_pixmap)
+                music_stream = converter.parse(file_name)
+                sheet_pixmap = self.music_to_pixmap(music_stream)
             except Exception as ex:
                 logging.exception("Failed to load %s", file_name)
                 QMessageBox(self).critical(
@@ -47,6 +49,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     f"Nie można załadować pliku:\n{ex}",
                     QMessageBox.StandardButton.Ok,
                 )
+            else:
+                self.sheet_view.load(sheet_pixmap)
+                sheet_notes = [
+                    n for n in music_stream.recurse().notes if isinstance(n, note.Note)
+                ]
+                logging.debug("Number of notes: %s", len(sheet_notes))
+                self.note_finder = NoteFinder(sheet_notes)
 
     def music_to_pixmap(self, music_stream):
         conv = converter.subConverters.ConverterMusicXML()
