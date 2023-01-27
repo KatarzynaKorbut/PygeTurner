@@ -29,11 +29,6 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(1037, 768)
-        self.actionPlay = QAction(MainWindow)
-        self.actionPlay.setObjectName(u"actionPlay")
-        icon = QIcon()
-        icon.addFile(u":/icons/feather icons/play.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.actionPlay.setIcon(icon)
         self.open_sheet = QAction(MainWindow)
         self.open_sheet.setObjectName(u"open_sheet")
         self.open_sound = QAction(MainWindow)
@@ -116,10 +111,6 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"PygeTurner", None))
-        self.actionPlay.setText(QCoreApplication.translate("MainWindow", u"Play", None))
-#if QT_CONFIG(shortcut)
-        self.actionPlay.setShortcut(QCoreApplication.translate("MainWindow", u"P", None))
-#endif // QT_CONFIG(shortcut)
         self.open_sheet.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz &nuty", None))
         self.open_sound.setText(QCoreApplication.translate("MainWindow", u"Otw\u00f3rz &d\u017awi\u0119k", None))
         self.set_musescore_path.setText(QCoreApplication.translate("MainWindow", u"Ustaw \u015bcie\u017ck\u0119 do MuseScore", None))

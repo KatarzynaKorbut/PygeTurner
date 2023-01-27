@@ -105,18 +105,6 @@
     <bool>false</bool>
    </attribute>
   </widget>
-  <action name="actionPlay">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/icons/feather icons/play.svg</normaloff>:/icons/feather icons/play.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Play</string>
-   </property>
-   <property name="shortcut">
-    <string>P</string>
-   </property>
-  </action>
   <action name="open_sheet">
    <property name="text">
     <string>Otwórz &amp;nuty</string>
