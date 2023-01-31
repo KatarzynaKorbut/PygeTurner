@@ -22,8 +22,6 @@ from PySide6.QtWidgets import (QApplication, QGraphicsView, QMainWindow, QMenu,
 
 from audio_player import AudioPlayer
 from sheet_viewer import SheetViewer
-import resources_rc
-
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
