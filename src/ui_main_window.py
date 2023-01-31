@@ -60,10 +60,11 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.results_textbox)
 
         self.verticalLayout.setStretch(0, 3)
+        self.verticalLayout.setStretch(2, 2)
         MainWindow.setCentralWidget(self.main_area)
         self.menu_bar = QMenuBar(MainWindow)
         self.menu_bar.setObjectName(u"menu_bar")
-        self.menu_bar.setGeometry(QRect(0, 0, 1037, 22))
+        self.menu_bar.setGeometry(QRect(0, 0, 1037, 21))
         self.file_menu = QMenu(self.menu_bar)
         self.file_menu.setObjectName(u"file_menu")
         MainWindow.setMenuBar(self.menu_bar)

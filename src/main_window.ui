@@ -17,7 +17,7 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="3,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="3,0,2">
     <item>
      <widget class="SheetViewer" name="sheet_view">
       <property name="styleSheet">
@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>1037</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="file_menu">
