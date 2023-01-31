@@ -111,8 +111,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 assert self.note_finder
                 note, penalty, jump = self.note_finder.locate(new_note)
                 result_line = (
-                    f"Nowa rozpoznana nuta: {new_note.name:3}  -->"
-                    f" odnaleziona jako: {note.name:2}"
+                    f"Nowa rozpoznana nuta: {new_note.name:4}  -->"
+                    f" odnaleziona jako: {note.name:3}"
                     f"  w takcie: {note.measureNumber:2}"
                     f"     część taktu: {float(note.offset+1):4.1f}"
                     f"     kara: {penalty:6.2f}     skok o: {jump:.2f} części taktu\n"
