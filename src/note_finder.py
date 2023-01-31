@@ -36,7 +36,7 @@ class NoteFinder:
         return abs(beat_distance)
 
     def match_penalty(self, match: Match) -> float:
-        JUMP_FACTOR = 1 / 20
+        JUMP_FACTOR = 1 / 5
         return match.dist + self.jump_distance(match) * JUMP_FACTOR
 
     def locate(self, new_note: Note) -> Tuple[Note, float, float]:
