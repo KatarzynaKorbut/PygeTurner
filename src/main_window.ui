@@ -111,6 +111,9 @@
    </property>
   </action>
   <action name="open_sound">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Otwórz &amp;dźwięk</string>
    </property>

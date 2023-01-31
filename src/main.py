@@ -8,6 +8,7 @@ from typing import Optional
 from music21 import converter, environment, note
 
 from note_finder import NoteFinder
+from transcriber import Transcriber
 
 if os.environ["VIRTUAL_ENV"]:
     virtual_env_path = Path(os.environ["VIRTUAL_ENV"])
@@ -26,6 +27,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         logging.basicConfig(level=logging.DEBUG)
         self.setupUi(self)
         self.note_finder: Optional[NoteFinder] = None
+        self.transcriber = Transcriber()
 
         self.open_sheet.triggered.connect(self.on_open_sheet_triggered)
         self.open_sound.triggered.connect(self.on_open_sound_triggered)
@@ -51,11 +53,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 )
             else:
                 self.sheet_view.load(sheet_pixmap)
-                sheet_notes = [
-                    n for n in music_stream.recurse().notes if isinstance(n, note.Note)
-                ]
+                sheet_notes = music_stream.recurse().getElementsByClass(note.Note)
                 logging.debug("Number of notes: %s", len(sheet_notes))
                 self.note_finder = NoteFinder(sheet_notes)
+
+                lowest_note: note.Note = min(sheet_notes, key=lambda n: n.pitch.ps)
+                highest_note: note.Note = max(sheet_notes, key=lambda n: n.pitch.ps)
+                self.transcriber.set_note_range(
+                    lowest_note.pitch.ps, highest_note.pitch.ps
+                )
+                self.open_sound.setEnabled(True)
 
     def music_to_pixmap(self, music_stream):
         conv = converter.subConverters.ConverterMusicXML()
@@ -78,6 +85,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file_path:
             logging.debug("Loading sound from %s", file_path)
             self.audio_player.load(file_path)
+            self.transcriber.load(file_path)
 
     def on_set_musescore_path_triggered(self, s):
         file_path, _ = QFileDialog.getOpenFileName(

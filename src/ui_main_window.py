@@ -33,6 +33,7 @@ class Ui_MainWindow(object):
         self.open_sheet.setObjectName(u"open_sheet")
         self.open_sound = QAction(MainWindow)
         self.open_sound.setObjectName(u"open_sound")
+        self.open_sound.setEnabled(False)
         self.set_musescore_path = QAction(MainWindow)
         self.set_musescore_path.setObjectName(u"set_musescore_path")
         self.main_area = QWidget(MainWindow)

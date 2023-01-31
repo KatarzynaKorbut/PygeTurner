@@ -9,13 +9,14 @@ from music21.note import Note
 class Transcriber:
     def __init__(self):
         self.n_bins: int
-        self.set_note_range("A0", "C8")  # zakres fortepianu
+        self.set_note_range(21, 108)  # zakres fortepianu
 
     def load(self, file_path):
         self.samples, self.sampling_rate = librosa.load(file_path)
+        samples_count = self.samples.shape[0]
         logging.info("Częstotliwość próbkowania: %d", self.sampling_rate)
-        logging.info("Całkowita liczba próbek: %d", self.samples.shape)
-        logging.info("Czas trwania: %.1f s", self.samples.shape[0] / self.sampling_rate)
+        logging.info("Całkowita liczba próbek: %d", samples_count)
+        logging.info("Czas trwania: %.1f s", samples_count / self.sampling_rate)
 
         self.f0 = self.base_frequency(
             self.samples, self.sampling_rate, self.note_lowest_hz, self.note_highest_hz
@@ -74,21 +75,18 @@ class Transcriber:
         ]
         return notes
 
-    def set_note_range(self, note_lowest, note_highest):
-        self.note_lowest_hz = librosa.note_to_hz(note_lowest)
-        self.note_highest_hz = librosa.note_to_hz(note_highest)
-
-        note_lowest_midi = cast(int, librosa.note_to_midi(note_lowest))
-        note_highest_midi = cast(int, librosa.note_to_midi(note_highest))
-        self.n_bins = (
+    def set_note_range(self, note_lowest_midi: float, note_highest_midi: float):
+        self.note_lowest_hz, self.note_highest_hz = librosa.midi_to_hz(
+            [note_lowest_midi, note_highest_midi]
+        )
+        self.n_bins = int(
             note_highest_midi - note_lowest_midi + 1
         )  # Number of frequency bins
 
         logging.info(
-            "Note range: lowest = %s (%.2f Hz), highest = %s (%.2f Hz), n_bins=%d",
-            note_lowest,
+            "Note range: lowest = %s (%.2f Hz), highest = %s (%.2f Hz)",
+            librosa.midi_to_note(note_lowest_midi),
             self.note_lowest_hz,
-            note_highest,
+            librosa.midi_to_note(note_highest_midi),
             self.note_highest_hz,
-            self.n_bins,
         )

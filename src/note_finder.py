@@ -1,4 +1,3 @@
-import logging
 from collections import deque
 from typing import Deque, Iterable, List, Tuple
 
@@ -19,7 +18,7 @@ class NoteFinder:
         self.sheet_notes = sheet_notes
         self.sheet_note_pitch_classes = self.notes_to_pitch_classes(self.sheet_notes)
         self.next_offset = 0
-        self.note_history = deque(maxlen=self.MAX_NOTE_HISTORY)
+        self.note_history: Deque[Note] = deque(maxlen=self.MAX_NOTE_HISTORY)
 
     @classmethod
     def notes_match(cls, note_a: Note, note_b: Note):
@@ -43,6 +42,7 @@ class NoteFinder:
     def locate(self, new_note: Note) -> Tuple[Note, float, float]:
         self.note_history.append(new_note)
 
+        self.next_offset = min(self.next_offset, len(self.sheet_note_pitch_classes) - 1)
         next_note = self.sheet_notes[self.next_offset]
         if len(self.note_history) < self.MIN_NOTE_HISTORY:
             self.next_offset += 1
