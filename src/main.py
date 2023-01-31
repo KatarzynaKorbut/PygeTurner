@@ -111,11 +111,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 assert self.note_finder
                 note, penalty, jump = self.note_finder.locate(new_note)
                 result_line = (
-                    f"New note transcibed: {new_note.name:2}  -->"
-                    f" recognized as: {note.name:2}"
-                    f" in bar {note.measureNumber:2}"
-                    f" beat {float(note.offset+1):4}"
-                    f"   {penalty =:6.2f}   {jump=:.2f}\n"
+                    f"Nowa rozpoznana nuta: {new_note.name:3}  -->"
+                    f" odnaleziona jako: {note.name:2}"
+                    f"  w takcie: {note.measureNumber:2}"
+                    f"     część taktu: {float(note.offset+1):4.1f}"
+                    f"     kara: {penalty:6.2f}     skok o: {jump:.2f} części taktu\n"
                 )
                 self.result_text += result_line
                 self.results_textbox.setText(self.result_text)
