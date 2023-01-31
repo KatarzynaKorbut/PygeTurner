@@ -16,9 +16,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QGraphicsView, QHBoxLayout, QMainWindow,
-    QMenu, QMenuBar, QScrollArea, QSizePolicy,
-    QToolBar, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QGraphicsView, QMainWindow, QMenu,
+    QMenuBar, QSizePolicy, QTextBrowser, QToolBar,
+    QVBoxLayout, QWidget)
 
 from audio_player import AudioPlayer
 from sheet_viewer import SheetViewer
@@ -54,39 +54,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.audio_player)
 
-        self.widget = QWidget(self.main_area)
-        self.widget.setObjectName(u"widget")
-        self.horizontalLayout_2 = QHBoxLayout(self.widget)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.scrollArea_2 = QScrollArea(self.widget)
-        self.scrollArea_2.setObjectName(u"scrollArea_2")
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.scrollArea_2.sizePolicy().hasHeightForWidth())
-        self.scrollArea_2.setSizePolicy(sizePolicy)
-        self.scrollArea_2.setWidgetResizable(True)
-        self.scrollAreaWidgetContents_2 = QWidget()
-        self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 496, 153))
-        self.verticalLayout_3 = QVBoxLayout(self.scrollAreaWidgetContents_2)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+        self.results_textbox = QTextBrowser(self.main_area)
+        self.results_textbox.setObjectName(u"results_textbox")
 
-        self.horizontalLayout_2.addWidget(self.scrollArea_2)
-
-        self.widget_3 = QWidget(self.widget)
-        self.widget_3.setObjectName(u"widget_3")
-        self.verticalLayout_4 = QVBoxLayout(self.widget_3)
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-
-        self.horizontalLayout_2.addWidget(self.widget_3)
-
-
-        self.verticalLayout.addWidget(self.widget)
+        self.verticalLayout.addWidget(self.results_textbox)
 
         self.verticalLayout.setStretch(0, 3)
-        self.verticalLayout.setStretch(2, 1)
         MainWindow.setCentralWidget(self.main_area)
         self.menu_bar = QMenuBar(MainWindow)
         self.menu_bar.setObjectName(u"menu_bar")

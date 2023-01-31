@@ -17,7 +17,7 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="3,0,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="3,0,0">
     <item>
      <widget class="SheetViewer" name="sheet_view">
       <property name="styleSheet">
@@ -35,39 +35,7 @@
      <widget class="AudioPlayer" name="audio_player" native="true"/>
     </item>
     <item>
-     <widget class="QWidget" name="widget" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item>
-        <widget class="QScrollArea" name="scrollArea_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="scrollAreaWidgetContents_2">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>496</width>
-            <height>153</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3"/>
-         </widget>
-        </widget>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget_3" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_4"/>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+     <widget class="QTextBrowser" name="results_textbox"/>
     </item>
    </layout>
   </widget>

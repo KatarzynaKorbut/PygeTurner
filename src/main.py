@@ -16,7 +16,7 @@ if os.environ["VIRTUAL_ENV"]:
     qt_plugins_path = virtual_env_path / "Lib/site-packages/PySide6/plugins"
     os.environ["QT_PLUGIN_PATH"] = str(qt_plugins_path)
 
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QTextCursor
 from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox
 
 from ui_main_window import Ui_MainWindow
@@ -29,6 +29,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.note_finder: Optional[NoteFinder] = None
         self.transcriber = Transcriber()
+        self.result_text = ""
 
         self.open_sheet.triggered.connect(self.on_open_sheet_triggered)
         self.open_sound.triggered.connect(self.on_open_sound_triggered)
@@ -58,7 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             else:
                 self.sheet_view.load(sheet_pixmap)
                 sheet_notes = music_stream.recurse().getElementsByClass(Note)
-                logging.debug("Number of notes: %s", len(sheet_notes))
+                logging.info("Number of notes: %s", len(sheet_notes))
                 self.note_finder = NoteFinder(sheet_notes)
 
                 lowest_note: Note = min(sheet_notes, key=lambda n: n.pitch.ps)
@@ -109,13 +110,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 new_note = self.transcriber.get_new_note()
                 assert self.note_finder
                 note, penalty, jump = self.note_finder.locate(new_note)
-                logging.info(
+                result_line = (
                     f"New note transcibed: {new_note.name:2}  -->"
                     f" recognized as: {note.name:2}"
                     f" in bar {note.measureNumber:2}"
                     f" beat {float(note.offset+1):4}"
-                    f"   {penalty =:6.2f}   {jump=:.2f}"
+                    f"   {penalty =:6.2f}   {jump=:.2f}\n"
                 )
+                self.result_text += result_line
+                self.results_textbox.setText(self.result_text)
+                self.results_textbox.moveCursor(QTextCursor.MoveOperation.End)
 
 
 app = QApplication(sys.argv)
