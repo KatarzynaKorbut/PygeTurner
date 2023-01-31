@@ -1,5 +1,5 @@
 import logging
-from typing import cast
+from typing import Iterable
 
 import librosa
 import numpy
@@ -10,6 +10,8 @@ class Transcriber:
     def __init__(self):
         self.n_bins: int
         self.set_note_range(21, 108)  # zakres fortepianu
+        self.has_new_note = False
+        self.last_note_number = -1
 
     def load(self, file_path):
         self.samples, self.sampling_rate = librosa.load(file_path)
@@ -25,6 +27,27 @@ class Transcriber:
         self.notes_with_times = self.get_notes_with_times(
             self.f0, self.sampling_rate, onset_frames
         )
+
+    def update_time(self, seconds: float):
+        note_number = self.last_note_number
+        # spróbuj cofnąć się do najnowszej nuty przed zadanym czasem
+        while note_number > 0 and self.notes_with_times[note_number][1] >= seconds:
+            note_number -= 1
+        # spróbuj pójść do przodu do najnowszej nuty przed zadanym czasem
+        while (
+            note_number + 1 < len(self.notes_with_times)
+            and self.notes_with_times[note_number + 1][1] < seconds
+        ):
+            note_number += 1
+
+        if note_number != self.last_note_number:
+            self.last_note_number = note_number
+            self.has_new_note = True
+        else:
+            self.has_new_note = False
+
+    def get_new_note(self) -> Note:
+        return self.notes_with_times[self.last_note_number][0]
 
     def spectrogram_image(self):
         spectrogram = librosa.cqt(
@@ -48,11 +71,15 @@ class Transcriber:
 
     @staticmethod
     def onset_frames(samples, sampling_rate):
-        return librosa.onset.onset_detect(y=samples, sr=sampling_rate, units="frames")
+        return librosa.onset.onset_detect(
+            y=samples, sr=sampling_rate, units="frames", backtrack=True
+        )
 
     @staticmethod
     def get_notes_with_times(f0, sampling_rate, onset_frames):
-        onset_times = librosa.frames_to_time(onset_frames, sr=sampling_rate)
+        onset_times: Iterable[float] = librosa.frames_to_time(
+            onset_frames, sr=sampling_rate
+        )
         note_durations = numpy.diff(onset_times)
 
         note_fragments = numpy.split(f0, onset_frames)[1:]
@@ -65,7 +92,7 @@ class Transcriber:
         ]
 
         note_frequencies = [numpy.nanmedian(fragment) for fragment in note_fragments]
-        pitch_spaces = librosa.hz_to_midi(note_frequencies)
+        pitch_spaces: Iterable[float] = librosa.hz_to_midi(note_frequencies)
         notes = [
             (Note(ps), onset_time)
             for is_valid, ps, onset_time in zip(

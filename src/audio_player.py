@@ -72,6 +72,9 @@ class AudioPlayer(QWidget):
             f"{self.time_to_text(self.player_duration)}"
         )
 
+    def is_playing(self):
+        return self.player.playbackState() == QMediaPlayer.PlaybackState.PlayingState
+
     def _player_duration_changed(self, milliseconds: int):
         logging.debug("Media duration: %s ms", milliseconds)
         self.player_duration = milliseconds
@@ -87,7 +90,7 @@ class AudioPlayer(QWidget):
     def _player_playback_state_changed(self, state: QMediaPlayer.PlaybackState):
         logging.debug("Player playback state changed: %s", state)
         if state == QMediaPlayer.PlaybackState.StoppedState:
-            self.play_pause_button.toggle()
+            self.play_pause_button.setDown(False)
 
     def _time_slider_changed(self, position):
         if self.time_slider.isSliderDown():

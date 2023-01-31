@@ -5,7 +5,8 @@ import tempfile
 from pathlib import Path
 from typing import Optional
 
-from music21 import converter, environment, note
+from music21 import converter, environment
+from music21.note import Note
 
 from note_finder import NoteFinder
 from transcriber import Transcriber
@@ -24,7 +25,7 @@ from ui_main_window import Ui_MainWindow
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
         self.setupUi(self)
         self.note_finder: Optional[NoteFinder] = None
         self.transcriber = Transcriber()
@@ -32,6 +33,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.open_sheet.triggered.connect(self.on_open_sheet_triggered)
         self.open_sound.triggered.connect(self.on_open_sound_triggered)
         self.set_musescore_path.triggered.connect(self.on_set_musescore_path_triggered)
+        self.audio_player.player.positionChanged.connect(
+            self.on_player_position_changed
+        )
 
     def on_open_sheet_triggered(self, s):
         logging.debug("on_open_sheet_triggered(%s)", s)
@@ -53,12 +57,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 )
             else:
                 self.sheet_view.load(sheet_pixmap)
-                sheet_notes = music_stream.recurse().getElementsByClass(note.Note)
+                sheet_notes = music_stream.recurse().getElementsByClass(Note)
                 logging.debug("Number of notes: %s", len(sheet_notes))
                 self.note_finder = NoteFinder(sheet_notes)
 
-                lowest_note: note.Note = min(sheet_notes, key=lambda n: n.pitch.ps)
-                highest_note: note.Note = max(sheet_notes, key=lambda n: n.pitch.ps)
+                lowest_note: Note = min(sheet_notes, key=lambda n: n.pitch.ps)
+                highest_note: Note = max(sheet_notes, key=lambda n: n.pitch.ps)
                 self.transcriber.set_note_range(
                     lowest_note.pitch.ps, highest_note.pitch.ps
                 )
@@ -97,6 +101,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             logging.debug("Setting musescoreDirectPNGPath to %s", file_path)
             music21_settings = environment.UserSettings()
             music21_settings["musescoreDirectPNGPath"] = file_path
+
+    def on_player_position_changed(self, milliseconds: int):
+        if self.audio_player.is_playing():
+            self.transcriber.update_time(milliseconds / 1000)
+            if self.transcriber.has_new_note:
+                new_note = self.transcriber.get_new_note()
+                assert self.note_finder
+                note, penalty, jump = self.note_finder.locate(new_note)
+                logging.info(
+                    f"New note transcibed: {new_note.name:2}  -->"
+                    f" recognized as: {note.name:2}"
+                    f" in bar {note.measureNumber:2}"
+                    f" beat {float(note.offset+1):4}"
+                    f"   {penalty =:6.2f}   {jump=:.2f}"
+                )
 
 
 app = QApplication(sys.argv)
